@@ -1424,14 +1424,18 @@ chmod 755 kbtd
             try {
                 console.log('Writing file and updating UI');
                 reloadFromText(text);
-                
-                const writable = await state.fileHandle.createWritable();
-                await writable.write(text);
-                await writable.close();
+                const formData = new FormData();
+                formData.append('file', text);
+                const response = await fetch('/upload/kanban.md', {
+                    method: 'POST',
+                    body: formData, // Automatically sets Content-Type: multipart/form-data
+                });
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status}`);
+                }
+                const result = await response.json();
                 console.log('File written successfully');
-                
-                const file = await state.fileHandle.getFile();
-                state.lastModified = file.lastModified;
+                state.lastModified = new Date();
             } catch (err) {
                 console.error('Error writing file:', err);
                 alert('Error saving file.');
@@ -1439,8 +1443,8 @@ chmod 755 kbtd
         }
 
         async function modifyFileLines(fn) {
-            const file = await state.fileHandle.getFile();
-            const text = await file.text();
+            const response = await fetch('/download/kanban.md');
+            const text = await response.text();
             const lines = text.split('\n');
             fn(lines);
             await writeFile(lines.join('\n'));
@@ -1742,9 +1746,9 @@ chmod 755 kbtd
 
         async function loadFile() {
             try {
-                const file = await state.fileHandle.getFile();
-                state.lastModified = file.lastModified;
-                const text = await file.text();
+				const response = await fetch('/download/kanban.md');
+                state.lastModified = new Date();
+                const text = await response.text();
                 state.sections = parseMarkdown(text);
                 
                 console.log('Parsed sections:', state.sections);
@@ -1930,8 +1934,8 @@ chmod 755 kbtd
         }
 
         const cardDetailModal = createModal('card-detail-modal', async (card) => {
-            const file = await state.fileHandle.getFile();
-            const text = await file.text();
+            const response = await fetch('/download/kanban.md');
+            const text = await response.text();
             const defaultIndent = detectIndent(text);
             
             const baseIndent = card.nestedLines.length > 0 
@@ -2663,11 +2667,11 @@ chmod 755 kbtd
             
             setupEventHandlers();
             
-            if (!checkFileSystemAccessAPI()) {
-                $('#api-warning').style.display = 'block';
-                $('#about-api-warning').style.display = 'block';
-                $('#open-file-btn').disabled = true;
-            }
+            //if (!checkFileSystemAccessAPI()) {
+            //    $('#api-warning').style.display = 'block';
+            //    $('#about-api-warning').style.display = 'block';
+            //    $('#open-file-btn').disabled = true;
+            //}
             
             const params = new URLSearchParams(window.location.search);
             state.filePath = params.get('file');
@@ -2726,26 +2730,8 @@ chmod 755 kbtd
             }
             
             try {
-                const [handle] = await window.showOpenFilePicker({
-                    id: 'kbtd-todo-file',
-                    mode: 'readwrite',
-                    types: [{
-                        description: 'Markdown files',
-                        accept: { 'text/markdown': ['.md'] }
-                    }]
-                });
-                
-                state.fileHandle = handle;
-                state.filePath = projectName;
-                
-                await storeFileHandle(projectName, handle);
-                
-                const newUrl = `${window.location.pathname}?file=${encodeURIComponent(projectName)}`;
-                window.history.pushState({}, '', newUrl);
-                
-                await loadFile();
-                startPolling();
-                
+				state.filePath = projectName;
+   		        await loadFile();
             } catch (err) {
                 if (err.name !== 'AbortError') {
                     console.error(err);
@@ -2912,8 +2898,10 @@ chmod 755 kbtd
                 
                 const swBlob = new Blob([swCode], { type: 'application/javascript' });
                 const swURL = URL.createObjectURL(swBlob);
+				
+                console.log('###### ' + swURL);
                 
-                navigator.serviceWorker.register(swURL).then(() => {
+				navigator.serviceWorker.register(swURL, { scope: swURL }).then(() => {
                     console.log('Service Worker registered');
                 }).catch((err) => {
                     console.error('Service Worker registration failed:', err);
@@ -2921,7 +2909,7 @@ chmod 755 kbtd
             }
         }
 
-        setupPWA();
+        //setupPWA();
         init();
 
     </script>
