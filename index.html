@@ -16,7 +16,7 @@
             --fg: #ffe;
             --bg: #112;
             --shade: #889;
-            --radius: 4px;
+            --radius: 0px;
         }
 
         .theme-0 { --bg: #112; --fg: #ffe; --shade: #889; }
@@ -46,7 +46,7 @@
             background: var(--bg);
             color: var(--fg);
             font-family: Helvetica, Arial, sans-serif;
-            padding: 1em;
+            padding: 0.75em 0.75em 0 1em;
             height: 100vh;
             display: flex;
             flex-direction: column;
@@ -63,15 +63,15 @@
             padding: .4rem .8rem;
             font-size: 1rem;
             font-weight: normal;
-            background: var(--fg);
-            color: var(--bg);
-            border: .1rem solid var(--fg);
+            background: none;
+            color: var(--fg);
+            border: none;
             border-radius: var(--radius);
             cursor: pointer;
         }
 
         button:hover {
-            opacity: 0.9;
+            background: var(--shade);
         }
 
         button:disabled {
@@ -153,14 +153,13 @@
             justify-content: space-between;
             align-items: center;
             padding-bottom: 1em;
-            border-bottom: .1rem solid var(--shade);
-            margin-bottom: 1em;
             flex-shrink: 0;
+            color: var(--bg);
         }
 
         .header-controls {
             display: flex;
-            gap: 0.5em;
+            gap: 1.5em;
             align-items: center;
             position: relative;
         }
@@ -285,7 +284,7 @@
             width: 1.2em;
             height: 1.2em;
             border: .1rem solid var(--fg);
-            border-radius: 2px;
+            border-radius: 0px;
             background: transparent;
             flex-shrink: 0;
         }
@@ -296,34 +295,37 @@
 
         .board {
             display: flex;
-            gap: 1em;
+            gap: 1.5em;
             overflow-x: auto;
             flex-grow: 1;
             align-items: stretch;
-            padding-bottom: 1em;
         }
 
         .column {
             background: transparent;
             border-radius: var(--radius);
             min-width: 200px;
-            max-width: 450px;
             flex: 1 1 0;
             display: flex;
             flex-direction: column;
             height: 100%;
-            border: .1rem solid var(--shade);
         }
 
         .column-header {
             padding: 0.75em;
             font-weight: bold;
-            border-bottom: .1rem solid var(--shade);
+            border-bottom: .06rem solid var(--bg);
             flex-shrink: 0;
+            text-align: center;
+            color: var(--shade);
+        }
+
+        div:hover div.column:hover > div.column-header {
+            border-bottom: .06rem solid var(--shade);
         }
 
         .card-list {
-            padding: 0.5em;
+            padding: 0.5em 0;
             overflow-y: auto;
             overflow-x: hidden;
             flex-grow: 1;
@@ -332,13 +334,14 @@
             gap: 0.5em;
             min-height: 0;
             position: relative;
+            scrollbar-width: none;
         }
 
         .card {
             background: transparent;
             padding: 0.75em;
             border-radius: var(--radius);
-            border: .1rem solid var(--shade);
+            border: .06rem solid var(--shade);
             cursor: pointer;
             user-select: none;
             word-wrap: break-word;
@@ -347,6 +350,7 @@
             display: flex;
             flex-direction: column;
             gap: 0.5em;
+            min-height: 4.9em;
         }
 
         .card:hover {
@@ -381,9 +385,10 @@
             display: flex;
             align-items: flex-start;
             justify-content: space-between;
-            font-size: 0.85em;
+            font-size: 0.583em;
             color: var(--shade);
             gap: 0.5em;
+            margin-top: auto;
         }
 
         .card-footer-content {
@@ -391,13 +396,17 @@
             flex-direction: column;
             align-items: center;
             gap: 0.25em;
+            margin-left: auto;
         }
 
         .card-metadata {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
+            flex-wrap: wrap;
             align-items: flex-start;
             gap: 0.25em;
+            text-transform: uppercase;
+            min-height: 2em;
         }
 
         .card-expand-indicator {
@@ -410,7 +419,7 @@
             height: 6px;
             width: 6ch;
             background: #445;
-            border-radius: 2px;
+            border-radius: 0px;
             overflow: hidden;
         }
 
@@ -428,7 +437,7 @@
             border: none;
             color: var(--shade);
             cursor: pointer;
-            font-size: 1.2em;
+            font-size: .8em;
             line-height: 1;
             flex-shrink: 0;
             display: flex;
@@ -483,7 +492,7 @@
             width: 1em;
             height: 1em;
             border: .1rem solid var(--fg);
-            border-radius: 2px;
+            border-radius: 0px;
             background: transparent;
             flex-shrink: 0;
         }
@@ -495,7 +504,7 @@
         .drop-indicator {
             height: 3px;
             background: var(--fg);
-            border-radius: 2px;
+            border-radius: 0px;
             opacity: 0;
             transition: opacity 0.1s;
             pointer-events: none;
@@ -507,14 +516,14 @@
         }
 
         .add-column {
-            min-width: 60px;
-            max-width: 60px;
+            min-width: 40px;
+            max-width: 40px;
             flex-shrink: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            padding-top: 0.75em;
+            padding-top: 0.35em;
         }
 
         .add-column-btn {
@@ -525,7 +534,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 50%;
         }
 
         .add-column-form {
@@ -563,7 +571,7 @@
         }
 
         .column-footer {
-            padding: 0.5em;
+            padding: 0.5em 0;
             display: flex;
             flex-direction: column;
             gap: 0.5em;
@@ -579,7 +587,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 50%;
         }
 
         .add-card-form {
@@ -2155,7 +2162,7 @@ chmod 755 kbtd
                     
                     const menuBtn = h('button', {
                         className: 'card-menu-btn',
-                        textContent: '⋮',
+                        textContent: '=',
                         onclick: (e) => {
                             e.stopPropagation();
                             const menu = cardDiv.querySelector('.card-menu');
