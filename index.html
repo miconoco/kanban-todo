@@ -1661,9 +1661,9 @@ chmod 755 kbtd
                 const text = lines.join('\n');
                 let newText;
                 if (text.trim() === '') {
-                    newText = `# ${projectName}\n\n## TODO\n\n## In Progress\n\n## Done\n`;
+                    newText = `# ${projectName}\n\n## 🚀 WIP\n\n## 👀 MAYBE?\n\n## 📝 NOT NOW\n\n## ✅ DONE\n`;
                 } else {
-                    newText = text + (text.endsWith('\n') ? '' : '\n') + `\n# ${projectName}\n\n## TODO\n\n## In Progress\n\n## Done\n`;
+                    newText = text + (text.endsWith('\n') ? '' : '\n') + `\n# ${projectName}\n\n## 🚀 WIP\n\n## 👀 MAYBE?\n\n## 📝 NOT NOW\n\n## ✅ DONE\n`;
                 }
                 lines.length = 0;
                 lines.push(...newText.split('\n'));
