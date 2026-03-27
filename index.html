@@ -1292,7 +1292,7 @@ chmod 755 kbtd
         function extractMetadata(nestedLines) {
             const metadata = [];
             const metadataPattern = /^(\w+):\s*(.+)$/;
-            const hashtagPattern = /#(\w+)/g;
+            const hashtagPattern = /#([a-z0-9/-]+)/gi;
             
             for (let i = 0; i < nestedLines.length; i++) {
                 const trimmed = nestedLines[i].trim();
