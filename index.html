@@ -1746,7 +1746,7 @@ chmod 755 kbtd
 
         async function loadFile() {
             try {
-				const response = await fetch('/download/kanban.md');
+                const response = await fetch('/download/kanban.md');
                 state.lastModified = new Date();
                 const text = await response.text();
                 state.sections = parseMarkdown(text);
@@ -2666,13 +2666,18 @@ chmod 755 kbtd
             insertSourceCopyright('about-source-copyright');
             
             setupEventHandlers();
-            
-            //if (!checkFileSystemAccessAPI()) {
-            //    $('#api-warning').style.display = 'block';
-            //    $('#about-api-warning').style.display = 'block';
-            //    $('#open-file-btn').disabled = true;
-            //}
-            
+
+            await renderRecentProjects();
+            state.filePath = "TODO";
+            await loadFile();
+            return;
+
+            if (!checkFileSystemAccessAPI()) {
+                $('#api-warning').style.display = 'block';
+                $('#about-api-warning').style.display = 'block';
+                $('#open-file-btn').disabled = true;
+            }
+
             const params = new URLSearchParams(window.location.search);
             state.filePath = params.get('file');
 
@@ -2730,8 +2735,8 @@ chmod 755 kbtd
             }
             
             try {
-				state.filePath = projectName;
-   		        await loadFile();
+                state.filePath = projectName;
+                await loadFile();
             } catch (err) {
                 if (err.name !== 'AbortError') {
                     console.error(err);
@@ -2898,10 +2903,8 @@ chmod 755 kbtd
                 
                 const swBlob = new Blob([swCode], { type: 'application/javascript' });
                 const swURL = URL.createObjectURL(swBlob);
-				
-                console.log('###### ' + swURL);
                 
-				navigator.serviceWorker.register(swURL, { scope: swURL }).then(() => {
+                navigator.serviceWorker.register(swURL, { scope: swURL }).then(() => {
                     console.log('Service Worker registered');
                 }).catch((err) => {
                     console.error('Service Worker registration failed:', err);
