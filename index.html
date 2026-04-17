@@ -19,6 +19,18 @@
             --radius: 4px;
         }
 
+        .theme-0 { --bg: #112; --fg: #ffe; --shade: #889; }
+        .theme-1 { --bg: #0d1b2a; --fg: #e0e1dd; --shade: #778da9; }
+        .theme-2 { --bg: #1c1917; --fg: #f5f5f4; --shade: #a8a29e; }
+        .theme-3 { --bg: #0f1c15; --fg: #e7e9e5; --shade: #8a9b8d; }
+        .theme-4 { --bg: #1a1a1e; --fg: #e6e6e6; --shade: #888890; }
+        .theme-5 { --bg: #0f0e17; --fg: #fffffe; --shade: #a7a9be; }
+        .theme-6 { --bg: #1c1b14; --fg: #fefae0; --shade: #dda15e; }
+        .theme-7 { --bg: #121214; --fg: #e1e1e6; --shade: #8d8d99; }
+        .theme-8 { --bg: #181425; --fg: #f4f4f5; --shade: #9ca3af; }
+        .theme-9 { --bg: #0a1917; --fg: #d8e2dc; --shade: #748b83; }
+        .theme-10 { --bg: #1a1410; --fg: #fff8f0; --shade: #b08968; }
+
         html {
             font-size: 1.25rem;
             box-sizing: border-box;
@@ -983,6 +995,19 @@ chmod 755 kbtd
                         <button class="burger-menu-item" id="about-menu-item">
                             <span>About</span>
                         </button>
+                        <select class="burger-menu-item" id="theme-menu-item">
+                            <option value="theme-0" selected>Dark Sky</option>
+                            <option value="theme-1">Deep Ocean</option>
+                            <option value="theme-2">Warm Stone</option>
+                            <option value="theme-3">Forest Mist</option>
+                            <option value="theme-4">Charcoal Slate</option>
+                            <option value="theme-5">Midnight Lavender</option>
+                            <option value="theme-6">Desert Sand</option>
+                            <option value="theme-7">Cool Gray</option>
+                            <option value="theme-8">Berry Night</option>
+                            <option value="theme-9">Teal Depth</option>
+                            <option value="theme-10">Copper Dark</option>
+                        </select>
                     </div>
                 </div>
             </header>
@@ -2781,6 +2806,11 @@ chmod 755 kbtd
         $('#about-menu-item').onclick = () => {
             closeBurgerMenu();
             aboutModal.open();
+        };
+
+        $('#theme-menu-item').onchange = (e) => {
+            document.body.className = e.target.value;
+            closeBurgerMenu();
         };
 
         $('#about-close-btn').onclick = () => {
